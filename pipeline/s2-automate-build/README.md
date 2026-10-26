@@ -173,7 +173,7 @@ Follow the instructions to create the remote and local repositories.
 * create a file '.gitignore' to avoid committing logs, dev settings, and binaries. 
 
 
-
+done: https://imgur.com/a/OSFkg2p
 
 
 
