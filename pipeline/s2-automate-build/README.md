@@ -225,7 +225,8 @@ For GitLab instance URL enter:<br>
 
 
 For the gitlab-ci token enter the generated token.<br>
-`Example: 85y84QhgbyaqWo38b7qg`
+~~`Example: 85y84QhgbyaqWo38b7qg`~~
+**mine is `DxrrfEYtXq_DMuBv-cDG`**
 
 For a description for the runner enter:<br>
 `[integration-server] docker`
@@ -247,6 +248,7 @@ For the Docker image (eg. ruby:2.1) enter:<br>
 
 4. Finally, in GitLab change the configuration of the runner to accept jobs without TAGS.
 
+done: https://imgur.com/a/srIcKsV
 
 **Exercise 2** 
 
