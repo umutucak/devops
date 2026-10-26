@@ -6,7 +6,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.hostname = "devops-vm"
   config.vm.network :private_network, ip: "192.168.58.111"
 
-  config.vm.synced_folder "data", "/vagrant_data"
+  # config.vm.synced_folder "data", "/vagrant_data"
   config.vm.synced_folder "scripts", "/vagrant_scripts"
 
 
