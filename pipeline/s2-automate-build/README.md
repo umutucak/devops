@@ -127,6 +127,8 @@ Notice that the basic docker daemon and docker CLI have been already installed o
 
 `sudo usermod -aG docker $YOUR_USERNAME`
 
+**not actually needed, this ran during provision**
+
 
 2- Validate the installation and access by running a hello word container.
 
@@ -137,13 +139,15 @@ The expected output should be.
 
 `Hello from Docker!`
 
+**done**
+
 3- Remove the docker container and image:
 
 `docker rm hello-world`
 
 `docker rmi hello-world`
 
-
+**done**
 
 
 ## Use GitLab as VCS
