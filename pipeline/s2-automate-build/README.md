@@ -37,11 +37,21 @@ should be triggered.
 
 * 1.a Analyse how the provisioning is done.
 
+delivered through an ansible playbook. config defines 2 [roles](https://docs.ansible.com/projects/ansible/latest/reference_appendices/playbooks_keywords.html#role), for gitlab and docker. they then execute their own installations through [tasks](https://docs.ansible.com/projects/ansible/latest/reference_appendices/playbooks_keywords.html#task). the tasks are calling [modules](https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/), predefined sets of instructions that can be structured into yaml.
+
 * 1.b Is there any "qualities" being addressed by the way the provisioning is done? Justify. 
+
+**repeatability** & **[idempotency](https://www.compilenrun.com/docs/devops/ansible/ansible-best-practices/ansible-idempotency/)**: found this word while reading about ansible. i'd say this is the biggest due to how playbooks work if there is nothing to update. they do not necessarily target actions, but the outcomes of those actions. changes are made if we arent in the target state we want to be in. the article extends idempotency to more qualities -> **safety**, **reliability**, **predictability**, and **efficiency**. i really like the idempotency of ansible, but would argue that many of these qualities the article proposes are already provided by the notion on provisioning.
+
+**maintainability**: provisioning is delegated outside of the vagrantfile, now all provisioning tasks can be handled in isolation without touching the rest of the vagrant config which touches vm configuration too (networking, box, etc).
+
+**simplicity**: instead of writing lots of bashcommands into the vagrant file, we use a higher level management system through the playbook. this also aids in maintainability, as bash commands/CLI interactions can be deprecated, which could potentially be better maintained by the ansible module maintainers.
  
 * 1.c Add package "nmap" to the playbook.
 
+first, confirmed that nmap was on `apt` via their [website](https://nmap.org/book/inst-linux.html). although main site recommends to build from source, `apt` offers the package. then, all i had to do was install via the [apt module](https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/apt_module.html#ansible-collections-ansible-builtin-apt-module) using the [name parameter](https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/apt_module.html#parameter-name). to confirm: 1) `vagrant ssh`, 2) `nmap --version`
 
+kept the `apt update` & `apt upgrade` steps, even though they are redundant and are ran by gitlab and docker already. i kept it intentionally to not build dependencies between the roles. we could drop docker and gitlab one day, then those steps would be omitted. if i were to touch them: i would keep `update`, so that `nmap` fetches its own updated package, and would drop `upgrade`, as i dont think it's `nmap`'s task to upgrade system packages. if we want `nmap` to keep itself up to date, i would add `state: latest` to it.
 
 ## Configure GitLab
 
@@ -58,7 +68,7 @@ It only remains to make its configuration.
 
 by
 
-`external_url 'http://192.168.33.9/gitlab' `
+`external_url 'http://192.168.56.9/gitlab' `
 
 and
 
@@ -84,7 +94,7 @@ by
 
 3- Connect to GitLab
 
-Open `http://192.168.33.9/gitlab` in your browser.
+Open `http://192.168.56.9/gitlab` in your browser.
 
 You will be asked to provide a password (refered as $YOUR_PASSWORD later) for the root credentials.
 
@@ -201,7 +211,7 @@ This is done by executing the following commands:
 2. Then enter the requested information as follows:
 
 For GitLab instance URL enter:<br>
-`http://192.168.33.9/gitlab/`
+`http://192.168.56.9/gitlab/`
 
 
 For the gitlab-ci token enter the generated token.<br>
