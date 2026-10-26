@@ -102,12 +102,18 @@ To further login with root the credentials are:<br>
 Login: root<br>
 Password: $YOUR_PASSWORD<br>
 
+**i was not shown this root setup page, so i have my default root pass: `rrLa2/oBs4kvdstScR0gJ8O5F1TfcquZr18gp21dsFI=`**
+
  
    
 **Notes:** 
 
 * Upon starting the service up yet another user is requested to be created. 
 Keep the credentials of this new user, as you'll need it for creating repositories.
+
+new user credentials
+login: test
+password: this1password2
 
 * In case you need to reset the password of a GitLab user follow the instructions given in this [link](https://docs.gitlab.com/user/profile/user_passwords/)
 
