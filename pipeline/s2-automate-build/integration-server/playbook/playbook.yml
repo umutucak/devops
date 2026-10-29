@@ -20,6 +20,8 @@
   - include_role:
       name: nmap
 
+  - include_role:
+      name: gitlab-runner
 
   post_tasks:
 

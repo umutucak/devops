@@ -1,0 +1,18 @@
+---
+
+- name: "Update repositories cache."
+  apt:
+    update_cache: yes
+
+- name: "Add GitLab Runner apt repository)"
+  command: curl -sL "{{ gitlab_runner_repo_script }}" | bash
+  args:
+    # "if a matching file already exsists, this step will not be run"
+    # https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/command_module.html#parameter-creates
+    creates: /etc/apt/sources.list.d/gitlab_runner.list
+
+- name: "Install GitLab Runner."
+  apt:
+    name: gitlab-runner
+    state: present
+

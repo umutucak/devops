@@ -264,6 +264,8 @@ add to docker group
 
 validate docker
 
+install gitlab-runner
+
 
 * 2.b List those that could be added to a playbook.
 
@@ -276,6 +278,8 @@ validate docker
 **add to docker group** -> automated
 
 **validate docker** -> automated
+
+**install gitlab-runner** -> automated
 
 * 2.c Add (at least) half of them to either a new or existent playbook.
 
