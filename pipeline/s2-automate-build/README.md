@@ -256,10 +256,14 @@ done: https://imgur.com/a/srIcKsV
 
 edit gitlab config file
 
+reconfigure and restart gitlab
+
 
 * 2.b List those that could be added to a playbook.
 
 **edit gitlab config file** -> automated
+
+**reconfigure and restart gitlab** -> automated
 
 * 2.c Add (at least) half of them to either a new or existent playbook.
 
