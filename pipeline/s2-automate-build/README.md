@@ -348,11 +348,33 @@ run_app:
 * 3.a Use GtiLab to analyse what has just happened?<br>
 **Tip:** have a look on the CI/CD -> Pipelines of the project.
 
+the pipeline defined in the `.yml` was ran. three jobs were executed successfully: 1) build_app, 2) test_app, 3) run_app
+this is the CI. when new code was pushed, it executed a build to see if builds successfully, a test to see if it passes unit tests, and a run to see if it can be sucessfully deployed, not to be confused with CD. this is just to serve as a demo to run the product.
+
 * 3.b Try to run again the CI and inspect the intermediate results of each stage.
+
+for building:
+1. preparing the docker executor: get maven image
+2. preparing environment
+3. getting source from git repo
+4. restoring cache: "No URL provided, cache will not be downloaded from shared cache server. Instead a local version of cache will be extracted. "
+5. step_script stage: `mvn compile` as defined. the main task
+6. attempt cache save: cant
+7. cleanup
+
+results per stage:
+- build: `mvn compile` ends with `BUILD SUCCESS`
+- test: surefire summary `Tests run: 2, Failures: 0, Errors: 0, Skipped: 0`
+- run: `Building jar: /builds/gitlab/developer/hellomaven/target/MavenHelloWorldProject-1.0-SNAPSHOT.jar`, then the app prints `Hello World!`
 
 * 3.c Where is the .jar file generated as result of the build?
 
-
+in the target/ directory inside the docker container. we can see in the run_app job logs "[INFO] Building jar: /builds/gitlab/developer/hellomaven/target/MavenHelloWorldProject-1.0-SNAPSHOT.jar". we can also see under the "Saving cache for successful job" step:
+```
+Creating cache default-protected...
+target/: found 33 matching artifact files and directories 
+No URL provided, cache will not be uploaded to shared cache server. Cache will be stored only locally.
+```
 
 ### Storing the "binary"
 
@@ -384,9 +406,10 @@ deploy_app:
 * 4.a Find out what is the result of this modification.<br>
 **Tip:** have a look on the CI/CD -> Pipelines of the project.
 
+pushed the updated ci, which triggered a second pipeline to trigger, this time with 4 steps
 
+the deploy job saved the `target/` folder with the jar in it. the zip can be downloaded as an artifact.
 
-
-
+this is still not CD, as there was no autonomous deployment following the changes. however, the built program is in hand as an artifact, which is a candidate.
 
    
