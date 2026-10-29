@@ -64,6 +64,16 @@
     state: present
   when: not gitlab_file.stat.exists
 
+# the stat tasks above ran before install, so their results are stale on a fresh
+# VM and would skip every post-install task. re-stat so `when` sees the new state.
+- name: "Refresh GitLab install status."
+  stat: path=/usr/bin/gitlab-ctl
+  register: gitlab_file
+
+- name: "Refresh GitLab config status."
+  stat: path=/etc/gitlab/gitlab.rb
+  register: gitlab_config_file
+
 - name: "Set GitLab external_url."
   lineinfile:
     path: /etc/gitlab/gitlab.rb
@@ -108,25 +118,32 @@
   when: gitlab_file.stat.exists
 
   # this bash command was written with glm-5.3-flash
+  # User.create! fails on modern GitLab ("Namespace can't blank"); the service
+  # below is the same path the UI uses and creates the namespace too.
+  # (GitLab 19 renamed Gitlab::UserCreationService -> Users::CreateService,
+  # and its Organizations feature requires an organization at creation time)
 - name: "Create the developer user (idempotent)."
   shell: |
     set -e
     u=$(gitlab-rails runner "puts User.find_by_username('{{ gitlab_developer_username }}')&.id" 2>/dev/null)
-    if [ -z "$u" ]; then
-      export GITLAB_DEV_PASSWORD='{{ gitlab_developer_password }}'
-      gitlab-rails runner "
-        User.create!(
-          username: '{{ gitlab_developer_username }}',
-          email:    '{{ gitlab_developer_email }}',
-          name:     'Developer',
-          password: ENV['GITLAB_DEV_PASSWORD'],
-          skip_confirmation: true
-        )
-      "
-      echo created
-    else
+    if [ -n "$u" ]; then
       echo exists
+      exit 0
     fi
+    export GITLAB_DEV_PASSWORD='{{ gitlab_developer_password }}'
+    gitlab-rails runner "
+      r = Users::CreateService.new(
+        User.find_by_username('root'),
+        username:          '{{ gitlab_developer_username }}',
+        email:             '{{ gitlab_developer_email }}',
+        name:              'Developer',
+        password:          ENV['GITLAB_DEV_PASSWORD'],
+        organization_id:   Organizations::Organization.first.id,
+        skip_confirmation: true
+      ).execute
+      raise r.message unless r.success?
+    "
+    echo created
   register: gitlab_developer_create
   changed_when: "'created' in gitlab_developer_create.stdout"
   when: gitlab_file.stat.exists
