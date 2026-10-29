@@ -1,0 +1,8 @@
+---
+
+gitlab_runner_repo_script: "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh"
+gitlab_runner_url: "http://192.168.56.9/gitlab/"
+gitlab_runner_description: "[integration-server] docker"
+gitlab_runner_tags: "integration"
+gitlab_runner_executor: "docker"
+gitlab_runner_image: "alpine:latest"

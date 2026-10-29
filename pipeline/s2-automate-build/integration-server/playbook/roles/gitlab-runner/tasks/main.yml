@@ -1,5 +1,9 @@
 ---
 
+- name: "Load runner secrets (vault-encrypted)."
+  include_vars:
+    file: "{{ role_path }}/defaults/secrets.yml"
+
 - name: "Update repositories cache."
   apt:
     update_cache: yes
@@ -15,4 +19,21 @@
   apt:
     name: gitlab-runner
     state: present
+
+- name: "Check whether a runner is already registered."
+  command: grep -qF "[[runners]]" /etc/gitlab-runner/config.toml
+  register: register_check
+  failed_when: false
+  changed_when: false
+
+- name: "Register the GitLab Runner (non-interactive)."
+  command: >
+    gitlab-runner register
+    --url "{{ gitlab_runner_url }}"
+    --token "{{ gitlab_runner_token }}"
+    --description "{{ gitlab_runner_description }}"
+    --tag-list "{{ gitlab_runner_tags }}"
+    --executor "{{ gitlab_runner_executor }}"
+    --docker-image "{{ gitlab_runner_image }}"
+  when: register_check.rc != 0
 

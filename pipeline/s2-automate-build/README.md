@@ -266,6 +266,8 @@ validate docker
 
 install gitlab-runner
 
+configure gitlab-runner
+
 
 * 2.b List those that could be added to a playbook.
 
@@ -280,6 +282,8 @@ install gitlab-runner
 **validate docker** -> automated
 
 **install gitlab-runner** -> automated
+
+**configure gitlab-runner** -> automated
 
 * 2.c Add (at least) half of them to either a new or existent playbook.
 
