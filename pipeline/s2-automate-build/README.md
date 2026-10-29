@@ -268,6 +268,8 @@ install gitlab-runner
 
 configure gitlab-runner
 
+restart gitlab-runner
+
 
 * 2.b List those that could be added to a playbook.
 
@@ -284,6 +286,8 @@ configure gitlab-runner
 **install gitlab-runner** -> automated
 
 **configure gitlab-runner** -> automated
+
+**restart gitlab-runner** -> automated
 
 * 2.c Add (at least) half of them to either a new or existent playbook.
 

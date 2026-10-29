@@ -37,3 +37,15 @@
     --docker-image "{{ gitlab_runner_image }}"
   when: register_check.rc != 0
 
+- name: "Ensure GitLab Runner service is running (already registered)."
+  service:
+    name: gitlab-runner
+    state: started
+  when: register_check.rc == 0
+
+- name: "Restart GitLab Runner to apply the new registration."
+  service:
+    name: gitlab-runner
+    state: restarted
+  when: register_check.rc != 0
+
