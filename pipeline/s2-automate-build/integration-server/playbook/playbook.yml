@@ -20,3 +20,9 @@
   - include_role:
       name: nmap
 
+
+  post_tasks:
+
+  - name: "Show GitLab credentials."
+    debug:
+      msg: "{{ gitlab_credentials_summary }}"

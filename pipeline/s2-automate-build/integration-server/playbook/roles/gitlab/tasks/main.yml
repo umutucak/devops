@@ -1,5 +1,9 @@
 ---
 
+- name: "Load vault-encrypted secrets (gitlab_root_password, gitlab_developer_password)."
+  include_vars:
+    file: "{{ role_path }}/defaults/secrets.yml"
+
 - name: "Create Downloads folder"
   file:
     path: "{{ destination }}"
@@ -85,3 +89,51 @@
   command: gitlab-ctl restart
   when: gitlab_file.stat.exists
 
+
+  # this ruby one-liner code was written with glm-5.3-flash. explanation:
+  # u = User.find_by_username('root'); pulls the user record for root from gitlab db
+  # u.password = ENV['GITLAB_ROOT_PASSWORD']; ----------------|
+  # u.password_confirmation = ENV['GITLAB_ROOT_PASSWORD'];----|-----> write new password for root user in memory. why? because gitlab's assigned root pass is wiped after 24h, so we set it ourselves. + always have the same root pass
+  # u.password_automatically_set = false; tags it as a human-set password, removes "auto-assigned" banner
+  # u.save! actually writes it into db
+- name: "Set the admin (root) password."
+  command:
+    argv:
+      - gitlab-rails
+      - runner
+      - "u = User.find_by_username('root'); u.password = ENV['GITLAB_ROOT_PASSWORD']; u.password_confirmation = ENV['GITLAB_ROOT_PASSWORD']; u.password_automatically_set = false; u.save!"
+  environment:
+    GITLAB_ROOT_PASSWORD: "{{ gitlab_root_password }}"
+  changed_when: false   # converging to the same value on every run
+  when: gitlab_file.stat.exists
+
+  # this bash command was written with glm-5.3-flash
+- name: "Create the developer user (idempotent)."
+  shell: |
+    set -e
+    u=$(gitlab-rails runner "puts User.find_by_username('{{ gitlab_developer_username }}')&.id" 2>/dev/null)
+    if [ -z "$u" ]; then
+      export GITLAB_DEV_PASSWORD='{{ gitlab_developer_password }}'
+      gitlab-rails runner "
+        User.create!(
+          username: '{{ gitlab_developer_username }}',
+          email:    '{{ gitlab_developer_email }}',
+          name:     'Developer',
+          password: ENV['GITLAB_DEV_PASSWORD'],
+          skip_confirmation: true
+        )
+      "
+      echo created
+    else
+      echo exists
+    fi
+  register: gitlab_developer_create
+  changed_when: "'created' in gitlab_developer_create.stdout"
+  when: gitlab_file.stat.exists
+
+- name: "Collect credentials for the final summary."
+  set_fact:
+    gitlab_credentials_summary:
+      - "GitLab is ready at {{ gitlab_external_url }}"
+      - "root       credential: root    password: {{ gitlab_root_password }}"
+      - "developer credentials: {{ gitlab_developer_username }}    password: {{ gitlab_developer_password }}"

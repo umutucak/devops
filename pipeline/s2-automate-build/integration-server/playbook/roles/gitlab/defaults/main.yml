@@ -16,3 +16,7 @@ gitlab_config_template: "gitlab.rb.j2"
 gitlab_package_version_separator: '='
 gitlab_repository_installation_script_url: "https://packages.gitlab.com/install/repositories/gitlab/{{ gitlab_edition }}/script.deb.sh"
 gitlab_download_validate_certs: true
+
+gitlab_developer_username: "developer"
+gitlab_developer_email: "developer@example.com"
+  

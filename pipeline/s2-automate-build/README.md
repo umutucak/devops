@@ -258,6 +258,8 @@ edit gitlab config file
 
 reconfigure and restart gitlab
 
+root and user config
+
 
 * 2.b List those that could be added to a playbook.
 
@@ -265,9 +267,15 @@ reconfigure and restart gitlab
 
 **reconfigure and restart gitlab** -> automated
 
+**root and user config** -> automated
+
 * 2.c Add (at least) half of them to either a new or existent playbook.
 
-
+steps involving secret keys/tokens/etc were encrypted with 
+[ansible-vault](https://docs.ansible.com/projects/ansible/latest/cli/ansible-vault.html). 
+this way, we can continue tracking many secrets within this playbook, and gate them behind 
+a single secret, kept inside `vault_pass.txt`, which must be passed as an argument (see Vagrantfile). 
+normally, it should probably be gitignored, but for the sake of the lab, it is commited.
 
 ### Create GitLab CI
 
