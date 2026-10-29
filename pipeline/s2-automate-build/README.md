@@ -264,6 +264,8 @@ add to docker group
 
 validate docker
 
+put repo on gitlab
+
 install gitlab-runner
 
 configure gitlab-runner
@@ -285,6 +287,8 @@ untagged job acceptance
 
 **validate docker** -> automated
 
+**put repo on gitlab** -> NOT automated, as the point of this lab is not unique to this repo. i considered it out of scope
+
 **install gitlab-runner** -> automated
 
 **configure gitlab-runner** -> automated
@@ -294,6 +298,8 @@ untagged job acceptance
 **untagged job acceptance** -> automated
 
 * 2.c Add (at least) half of them to either a new or existent playbook.
+
+with this, i have automated 9/10 manual tasks performed before
 
 steps involving secret keys/tokens/etc were encrypted with 
 [ansible-vault](https://docs.ansible.com/projects/ansible/latest/cli/ansible-vault.html). 
