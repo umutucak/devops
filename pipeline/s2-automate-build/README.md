@@ -364,7 +364,7 @@ for building:
 
 results per stage:
 - build: `mvn compile` ends with `BUILD SUCCESS`
-- test: surefire summary `Tests run: 2, Failures: 0, Errors: 0, Skipped: 0`
+- test: surefire summary `Tests run: 1, Failures: 0, Errors: 0, Skipped: 0`
 - run: `Building jar: /builds/gitlab/developer/hellomaven/target/MavenHelloWorldProject-1.0-SNAPSHOT.jar`, then the app prints `Hello World!`
 
 * 3.c Where is the .jar file generated as result of the build?
