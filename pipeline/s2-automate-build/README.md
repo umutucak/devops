@@ -253,7 +253,14 @@ done: https://imgur.com/a/srIcKsV
 **Exercise 2** 
 
 * 2.a Collect the manual steps you have done up to now. 
+
+edit gitlab config file
+
+
 * 2.b List those that could be added to a playbook.
+
+**edit gitlab config file** -> automated
+
 * 2.c Add (at least) half of them to either a new or existent playbook.
 
 

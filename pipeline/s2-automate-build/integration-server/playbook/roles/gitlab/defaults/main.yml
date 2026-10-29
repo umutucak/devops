@@ -6,7 +6,8 @@
 destination: "{{vHome}}/Tools_download"
 
 
-gitlab_external_url: "https://gitlab/"
+gitlab_external_url: "http://192.168.56.9/gitlab"
+gitlab_puma_port: 8088
 gitlab_git_data_dir: "/var/opt/gitlab/git-data"
 gitlab_edition: "gitlab-ce"
 gitlab_version: ''
@@ -15,4 +16,3 @@ gitlab_config_template: "gitlab.rb.j2"
 gitlab_package_version_separator: '='
 gitlab_repository_installation_script_url: "https://packages.gitlab.com/install/repositories/gitlab/{{ gitlab_edition }}/script.deb.sh"
 gitlab_download_validate_certs: true
-  
