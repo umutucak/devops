@@ -260,6 +260,8 @@ reconfigure and restart gitlab
 
 root and user config
 
+add to docker group
+
 
 * 2.b List those that could be added to a playbook.
 
@@ -268,6 +270,8 @@ root and user config
 **reconfigure and restart gitlab** -> automated
 
 **root and user config** -> automated
+
+**add to docker group** -> automated
 
 * 2.c Add (at least) half of them to either a new or existent playbook.
 
