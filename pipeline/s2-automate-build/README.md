@@ -270,6 +270,8 @@ configure gitlab-runner
 
 restart gitlab-runner
 
+untagged job acceptance
+
 
 * 2.b List those that could be added to a playbook.
 
@@ -288,6 +290,8 @@ restart gitlab-runner
 **configure gitlab-runner** -> automated
 
 **restart gitlab-runner** -> automated
+
+**untagged job acceptance** -> automated
 
 * 2.c Add (at least) half of them to either a new or existent playbook.
 

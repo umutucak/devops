@@ -49,3 +49,21 @@
     state: restarted
   when: register_check.rc != 0
 
+- name: "Check for GitLab Runner config."
+  stat:
+    path: /etc/gitlab-runner/config.toml
+  register: runner_config
+
+  # regex written with glm-5.3-flash
+- name: "Allow runner to accept untagged jobs."
+  lineinfile:
+    path: /etc/gitlab-runner/config.toml
+    regexp: "^run_untagged_jobs\s*="
+    line: "run_untagged_jobs = true"
+    insertafter: "^\[\[runners\]\]"
+  when: runner_config.stat.exists
+
+- name: "Verify GitLab Runner configuration."
+  command: gitlab-runner verify
+  when: runner_config.stat.exists
+  changed_when: false
