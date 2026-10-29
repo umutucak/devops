@@ -51,3 +51,21 @@
   shell: "usermod -aG docker {{ item }}"
   with_items:
     - vagrant
+
+
+- name: "Docker validation: run the hello-world container."
+  command: "docker run --name hello-world hello-world"
+  register: hello_world
+
+- name: "Docker validation: assert the 'Hello from Docker!' banner."
+  assert:
+    that:
+      - "'Hello from Docker!' in hello_world.stdout"
+    fail_msg: "hello-world did not print the expected banner. Got: {{ hello_world.stdout }}"
+    success_msg: "OK: docker CLI works — saw 'Hello from Docker!'"
+
+- name: "Docker validation: remove the hello-world container."
+  command: "docker rm hello-world"
+
+- name: "Docker validation: remove the hello-world image."
+  command: "docker rmi hello-world"

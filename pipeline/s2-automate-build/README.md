@@ -262,6 +262,8 @@ root and user config
 
 add to docker group
 
+validate docker
+
 
 * 2.b List those that could be added to a playbook.
 
@@ -272,6 +274,8 @@ add to docker group
 **root and user config** -> automated
 
 **add to docker group** -> automated
+
+**validate docker** -> automated
 
 * 2.c Add (at least) half of them to either a new or existent playbook.
 
